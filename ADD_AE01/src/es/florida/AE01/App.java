@@ -35,55 +35,66 @@ public class App {
 	public static void getInformacion(File directorio) {
 
 		String[] listaArchivos = directorio.list(); // crea una lista con el contenido del directorio
-		System.out.println("\nContenido de " + directorio.getName() + ":\n");
+		System.out.println("Contenido de " + directorio.getName() + ":\n");
 		String tipo = "";
 		String extension = "";
+		String tamanyo = "";
 		
-		
-
 		for (String archivo : listaArchivos) {
-			System.out.println("\nNombre: " + archivo); // Nombre del fichero
 
-			File f = new File(archivo.toString()); // Tipo de fichero. Creamos objeto File para comprobar si es carpeta o fichero /
-			int index = archivo.indexOf(".");		
-						
-
-			if(index!=-1) {
+			File f = new File(directorio + "\\" + archivo);  		//Tipo de fichero. Creamos objeto File (ruta  + nombre)
+			
+									
+			if(f.isFile()) {
+				int index = archivo.indexOf("."); 					//capturamos extension del fichero
 				extension = archivo.substring(index);
-				tipo = "Archivo";
-				System.out.println("Tipo: "+ tipo + extension);
-				String rutaabs = f.getAbsolutePath().toString();			//ruta absoluta del fichero o carpeta
-				System.out.println("Ruta: "+ rutaabs);
-			
-			long ultimamodificacion = f.lastModified();			//fecha
-			Date date = new Date(ultimamodificacion);
-			
-			String fechamodif = date.toString().substring(0,20);
-			System.out.println("Modif: "+ fechamodif);
+				tipo = "Archivo" + extension;
+				tamanyo =  Long.toString(f.length()) + " bytes";
+				
+				
 			} else {
 				tipo = "Carpeta";
+
 			}
 			
+			String nombre = archivo;
+			String rutaabs = f.getAbsolutePath().toString(); 			//ruta absoluta del fichero o carpeta
+			String fechamodif = ultimaModificacion(f);					//fecha modificacion
+			String oculto = elementoOculto(f);
 			
 			
 			
-			
-			
-
-			
-			
+			System.out.println("Nombre: " + archivo);		//*
+			System.out.println("Tipo: " + tipo);			//*
+			System.out.println("Ruta: " + rutaabs);			//*
+			System.out.println("Modif: " + fechamodif);		//*
+			System.out.println("Oculto: " + oculto);	//*
+			System.out.println("Tamaño: " + tamanyo +"\n");	//*
 		}
 	}
-	
+
 	public static String getString(String salida) {
 		
 		return "";
 	}
 	
-	public static String ultimaModificacion(String archivo) {
+	//Comprueba si elemento está oculto y devuel Sí o no
+	public static String elementoOculto(File f) {		
 		
-		
-		
-		return "";
+		String mensaje = "";
+		boolean oculto = f.isHidden();
+		if (oculto == true) mensaje = "Sí";
+		else mensaje = "No";
+		return mensaje;
+	}
+	
+	
+	public static String ultimaModificacion(File f) {
+
+			long date = f.lastModified();
+			Date fecha = new Date(date);
+			String fechamodif = fecha.toString().substring(0, 20);
+
+		return fechamodif;
 	}
 }
