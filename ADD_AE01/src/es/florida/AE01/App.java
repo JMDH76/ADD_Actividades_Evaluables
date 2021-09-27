@@ -2,6 +2,7 @@ package es.florida.AE01;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -21,21 +22,21 @@ public class App {
 		int opcion = 1;
 		while (opcion != 5) {
 			System.out.print(
-					"\nQué acción desea realizar:\n\n	1. Mostrar información de la carpeta local\n	2. Crear una carpeta en directorio local\n	"
-							+ "\n	3. Borrar un elemento de la carpeta de trabajo \n	5. Salir de la aplicación.\n\nElige una opción: ");
+					"\nMENU PRINCIPAL\n\n	1. Mostrar información de la carpeta local\n	2. Crear carpeta en directorio local"
+							+ "\n	3. Borrar elemento \n	4. Renombrar elemento\n\n	5. Salir de la aplicación.\n\nElige una opción: ");
 			opcion = Integer.parseInt(teclado.nextLine());
 
 			// Menú
 			if (opcion == 1)
-				System.out.print(getInformacion(directorio));
+				getInformacion(directorio);
 			else if (opcion == 2) {
 				System.out.println(creaCarpeta(directorio));
 				subMenu(teclado);
-
 			} else if (opcion == 3) {
 				elimina(directorio, teclado);
+			} else if (opcion == 4) {
+				
 			}
-
 		}
 		System.out.print("\nFin del programa");
 		teclado.close(); // cerramos al salir del programa para que no afecte a los métodos
@@ -45,16 +46,35 @@ public class App {
 	
 	public static void elimina (File directorio, Scanner teclado) {
 		
+		
+		ArrayList<String> elementos = new ArrayList<String>();
+		
 		System.out.println("\n3. ELIMINAR ELEMENTO\n   Indica qué elemento deseas eliminar de la carpeta \"" + directorio.getName() + "\"");
 		String[] listaArchivos = directorio.list();
+		
+		File f = new File ("");
 		
 		int cont = 0;
 		for ( String fichero : listaArchivos) {
 			cont++;
-			System.out.println("	"  + cont +". " + fichero);
+			System.out.println("	"  + cont + ". " + fichero);
+			elementos.add(fichero);			
 		}
 		System.out.print("\nElige un elemento: ");
-		String nombrefichero = teclado.nextLine();
+		int nombrefichero = Integer.parseInt(teclado.nextLine());
+		
+		int cont2 = 0;
+		for ( String elemento : elementos) {
+			cont2++;
+			if (cont2 == nombrefichero) {
+				f = new File (elemento);
+			}
+		}
+		
+		if (f.delete()) {
+			System.out.print("Elemento eliminado");
+		}else 
+			System.out.print("Elemento NO fue eliminado");
 	
 		
 	}
@@ -135,7 +155,7 @@ public class App {
 
 
 	// Extrae la informacion de todos los elementos de la carpeta y los muestra por consola.
-	public static String getInformacion(File directorio) {
+	public static void getInformacion(File directorio) {
 
 		String[] listaArchivos = directorio.list(); // crea una lista con el contenido del directorio
 		System.out.println("\n1. INFORMACION DE CARPETA\n   Contenido de \"" + directorio.getName() + "\"\n");
@@ -157,20 +177,16 @@ public class App {
 				tipo = "Archivo" + extension;
 				tamanyo = Long.toString(f.length()) + " bytes";
 
-				mensaje = getStringInfo(nombre, tipo, elementos, tamanyo, espacio, fechamodif, oculto, rutaabsoluta, f);
-				// System.out.println(getStringInfo(nombre, tipo, elementos, tamanyo, espacio,
-				// fechamodif, oculto, rutaabsoluta, f));
+				 System.out.println(getStringInfo(nombre, tipo, elementos, tamanyo, espacio, fechamodif, oculto, rutaabsoluta, f));
 
 			} else {
 				tipo = "Carpeta";
 				elementos = cuentaElementos(f);
 				espacio = espacioDisco(f);
-				mensaje = getStringInfo(nombre, tipo, elementos, tamanyo, espacio, fechamodif, oculto, rutaabsoluta, f);
-				// System.out.println(getStringInfo(nombre, tipo, elementos, tamanyo, espacio,
-				// fechamodif, oculto, rutaabsoluta, f));
+				
+				System.out.println(getStringInfo(nombre, tipo, elementos, tamanyo, espacio, fechamodif, oculto, rutaabsoluta, f));
 			}
 		}
-		return mensaje;
 	}
 
 	
