@@ -10,8 +10,6 @@ import java.util.Scanner;
 
 public class App {
 
-	static String carpetapath;
-	
 /*	Comment:
  	Método: main		
 	Descripción: lanza el menú principal de opciones llamando a los demás métodos directa o indirectamente.
@@ -29,13 +27,13 @@ public class App {
 					"\nMENU PRINCIPAL\n\n	1. Mostrar información de la carpeta local\n	2. Crear carpeta en directorio local"
 							+ "\n	3. Borrar elemento \n	4. Renombrar elemento\n\n	5. Salir de la aplicación.\n\nElige una opción: ");
 			opcion = Integer.parseInt(teclado.nextLine());
-
+			
 			// Menú
 			if (opcion == 1)
 				getInformacion(directorio);
 			else if (opcion == 2) {
-				System.out.println(creaCarpeta(directorio, teclado));
-				subMenu(teclado);
+				System.out.println(creaCarpeta(directorio, teclado, args));
+				subMenu(teclado, args);
 			} else if (opcion == 3) {
 				elimina(directorio, teclado);
 			} else if (opcion == 4) {
@@ -137,56 +135,60 @@ public class App {
 		System.out.print("\nElige un elemento: ");
 		int opcionmenu = Integer.parseInt(teclado.nextLine());
 
-		//Recorremos el ArrayList para buscar la posicion igual a la opcion elegida y convierte a objeto File y aplica condiciones
+		// Recorremos el ArrayList para buscar la posicion igual a la opcion elegida y
+		// convierte a objeto File y aplica condiciones
 		int cont2 = 0;
 		for (String elemento : elementos) {
 			cont2++;
 			if (cont2 == opcionmenu) {
 				File f = new File(directorio, elemento);
-				
-				// Condicion para borrar directorio
-				if (f.isDirectory()) { 									
-					String[] listaSubdirectorio = f.list(); 			// Crea lista de elementos del subdirectorio
 
-					for (String subelemento : listaSubdirectorio) { 	// Recorremos la llista:
-						File fil = new File(f, subelemento);
-						fil.delete(); 									// borra ardchivos
-						if (f.delete()) 								// Una vez vacio borra el directorio
-							System.out.println("	Elemento eliminado correctamente");
-						else 
-							System.out.println("	Elemento NO eliminado correctamente");
-					}
+				// Condicion para borrar directorio
+				
+				if (f.isDirectory()) {
+					String[] listaSubdirectorio = f.list(); // Crea lista de elementos del subdirectorio
+					int elemcarpeta = cuentaElementos (f);
+
+					if (elemcarpeta > 0) {		//borra directorio con archivos
+						for (String subelemento : listaSubdirectorio) {
+							File fil = new File(f, subelemento);
+							fil.delete(); 		// borra ardchivos del subdirectorio
+							if (f.delete()) 	// Una vez vacio borra el directorio
+								System.out.println("	Elemento eliminado correctamente");
+						}
+					} else if (f.delete())		//borra directorio vacio
+						System.out.println("	Elemento eliminado correctamente");
 				} else {
-					if (f.delete()) { 									// borra archivos
-						System.out.println("	Elemento eliminado");
+					if (f.delete()) { 			// borra archivos
+						System.out.println("	Elemento eliminado correctamente");
 					} else
 						System.out.println("	Elemento NO eliminado");
 				}
 			}
 		}
 	}
-
 	
 /*	Comment:
  	Método: subMenu
 	Descripción: submenu emergente (2.1.) cuando hemos creado una nueva carpeta, nos da opción de crear ficheros dentro de esta
-	INPUT:	Objeto Scanner teclado para poder capturar
-	OUTPUT:  devuelve el nuevo path "carpetapath" donde crear el fichero o null si se elige la opción 2 */	
-	public static void subMenu(Scanner teclado) {
+	INPUT:	Objeto Scanner teclado para poder capturar y String de argumentos.
+	OUTPUT:  devuelve a "args[1]" el nuevo path donde crear el fichero o "null" si se elige la opción 2 */	
+	public static void subMenu(Scanner teclado, String [] args) {
 
 		//Pasamos a String con path a objeto Path y así poder extraer el nombre de la nueva carpeta contenedora
-		Path nuevopath = Paths.get(carpetapath);
+		//Path nuevopath = Paths.get(carpetapath);
+		Path nuevopath = Paths.get(args[1]);
 
 		int opcion2 = 1;
-		if (carpetapath != null) {
+		if (args[1] != null) {
 			while (opcion2 != 2) {
 				System.out.print("\n	Deseas crear un fichero nuevo en la carpeta \"" + nuevopath.getFileName() + "\""
 						+ "\n	1. Sí\n	2. No	\n\n	Elige una opción: ");
 				opcion2 = Integer.parseInt(teclado.nextLine());
 				if (opcion2 == 1) {
-					System.out.print(creaFichero(carpetapath, teclado));
+					System.out.print(creaFichero(args[1], teclado));
 				} else if (opcion2 == 2) {
-					carpetapath = null;
+					args[1] = null;
 				}
 			}
 		}
@@ -202,7 +204,6 @@ public class App {
 	OUTPUT: Mensaje con resultado de la operacion */	
 	public static String creaFichero(String carpetapath, Scanner teclado) {
 
-		//Scanner teclado = new Scanner(System.in);
 		System.out.print("\n2.1. CREAR FICHERO\n     Indica un nombre y extensión para el nuevo fichero: ");
 		String nombrefichero = teclado.nextLine();
 
@@ -235,12 +236,11 @@ public class App {
 /*	Comment:
  	Método: creaCarpeta
 	Descripción: crea una carpeta nueva en el directorio de trabajo. Primero comprueba que no exista previamente.
-	Cuando la crea pasamos el path de esta a "carpetapath" para poder crear los ficheros dentro después.
+	Cuando la crea pasamos el path de esta a "args[1]" para poder crear los ficheros dentro después.
 	INPUT:	Objetos File directorio y Scanner teclado.
 	OUTPUT: String con mensaje del resultado de la operación. */
-	public static String creaCarpeta(File directorio, Scanner teclado) {
+	public static String creaCarpeta(File directorio, Scanner teclado, String [ ] args) {
 
-		//Scanner teclado = new Scanner(System.in);
 		System.out.print("\n2. CREAR CARPETA\n   Indica un nombre para la nueva carpeta: ");
 		String nombrecarpeta = teclado.nextLine();
 
@@ -250,7 +250,7 @@ public class App {
 		if (!f.exists()) {
 			if (f.mkdir()) {
 				mensaje = "\n	La carpeta \"" + nombrecarpeta + "\" se ha creado correctamente\n";
-				carpetapath = f.toString();
+				args [1] = f.toString();
 			} else 
 				mensaje = "\n	La carpeta no se ha podio crear\n";
 		} else {
