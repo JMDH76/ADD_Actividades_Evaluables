@@ -33,7 +33,7 @@ public class App {
 				getInformacion(directorio);
 			else if (opcion == 2) {
 				System.out.println(creaCarpeta(directorio, teclado, args));
-				subMenu(teclado, args);
+				subMenu(teclado, args);				//Crea el fichero pero sólo después de crear la carpeta contenedora
 			} else if (opcion == 3) {
 				elimina(directorio, teclado);
 			} else if (opcion == 4) {
@@ -48,45 +48,56 @@ public class App {
 /*	Comment:
  	Método: renombra
 	Descripción: 	cambia el nonbre a un elemento (archivo o carpeta) después de comprobar el tipo de elemento que es y si tiene o no permisos de escritura
-	INPUT:		directorio y objeto Scanner para poder capturar respuesta usuario
+	INPUT:		Objeto File directorio y objeto Scanner para poder capturar respuesta usuario
 	OUTPUT: 	mensaje con resultado de la operacion*/
 	public static String renombra(File directorio, Scanner teclado) throws IOException {
 
 		String mensaje = "";
-		ArrayList<String> elementos = new ArrayList<String>();	//Incluimos todos los elementos de la carpeta para buscarlo con la opcion del submenú
+		
+		//Llamamos al método "ordenalista()" para presentar el contenido ordenado (1º ficheros, después carpetas)
+		ArrayList<String> elementos = ordenalista(directorio);	
 
 		System.out.println(
 				"\n4. RENOMBRAR ELEMENTO\n   Indica qué elemento deseas renombrar en \"" + directorio.getName() + "\"");
-		String[] listaArchivos = directorio.list();
-
+		
 		int cont = 0;
-		for (String fichero : listaArchivos) { // Muestra por pantalla el contenido de la carpeta padre numerando los elementos para seleccionar cual renombrar como un menú
+		for (String fichero : elementos) { // Muestra por pantalla el contenido de la carpeta padre numerando los elementos para seleccionar cual renombrar como un menú
 			cont++;
 			System.out.println("	" + cont + ". " + fichero);
-			elementos.add(fichero);
 		}
 
-		System.out.print("\nElige un elemento: ");			//captura el elemento a renombrar
+		//captura el elemento a renombrar y nuevo nombre
+		System.out.print("\nElige un elemento: ");			
 		int opcionmenu = Integer.parseInt(teclado.nextLine());
-		System.out.print("Indica el nuevo nombre: ");		//Introducimos nuevo nombre
-		String nuevonombre = teclado.nextLine();
-
+		
+		
 		// Busca en el ArrayList el nombre del elemento correspondienta al numero elegido en "opcion de menu"
 		int cont2 = 0;
+		String tipo = "";
 		for (String elemento : elementos) {
 			
+			File nom = new File(elemento);
+			if(nom.isFile()) tipo = "el archivo";
+			else tipo = "la carpeta";
+			
+			System.out.print("Indica el nuevo nombre para" +tipo+" : ");		
+			String nuevonombre = teclado.nextLine();
+
+			
+			// Encuentra dentro del ArrayList el elemento elegido y crea los dos objetos File para renombrar
 			cont2++;
-			if (cont2 == opcionmenu) { // Encuentra dentro del ArrayList el elemento elegido y crea los dos objetos File para renombrar
+			if (cont2 == opcionmenu) { 
 				File f = new File(directorio, elemento);
 				File nf = new File(directorio, nuevonombre);
-				if (f.canWrite()) {		//Comprobamos si el elemento original tiene permiso de escritura
+				
+				if (f.canWrite()) {					//Comprobamos si el elemento original tiene permiso de escritura
 					
-					if (!nf.exists()) { // Comprobamos que el nuevo nombre no exista
+					if (!nf.exists()) { 			// Comprobamos que el nuevo nombre no exista
 
-						if (f.isFile()) { // Si es un fichero comprobamos que lleve una extension buscando el punto en el nuevo nombre
+						if (f.isFile()) { 			// Si es un fichero comprobamos que lleve una extension buscando el punto en el nuevo nombre
 
 							int index = nf.getName().indexOf(".");
-							if (index != -1) { // Si lleva el punto (extension) renombramos
+							if (index != -1) { 		// Si lleva el punto (extension) renombramos
 
 								if (f.renameTo(nf))
 									mensaje = "\n	El fichero \"" + f.getName()
@@ -111,6 +122,41 @@ public class App {
 	
 	
 /*	Comment:
+ 	Método:  ordenalista
+	Descripción: crea una lista con el contenido de una carpeta y la ordena dentro de otra lista que devolveremos
+	para presentar por pantalla los elementos oredenados por tipo (Ficheros y Carpetas).
+	INPUT:	Objeto File con contenido del directorio a ordenar
+	OUTPUT: devuelve un ArrayList con el contenido del directorio ordenado   */
+	public static ArrayList<String> ordenalista(File directorio) {
+		
+		ArrayList<String> archivos = new ArrayList<String>();	//ArrayList para archivos
+		ArrayList<String> carpetas = new ArrayList<String>();	//ArrayList para carpetas
+		
+		//Incluimos todos los elementos de la carpeta para mostrarlos por consola ordenados
+		ArrayList<String> elementos = new ArrayList<String>();	
+		
+		String[] listaArchivos = directorio.list();
+		
+		//Recorremos la lista y enviamos cada elemento a su ArrayList comprobando si es fichero  o no  ".isFile()"
+		for ( String fichero : listaArchivos) {			
+			File f = new File(directorio, fichero);
+			if (f.isFile())  archivos.add(fichero);
+			else carpetas.add(fichero);
+		}
+
+		//Unimos los dos arraysList en uno "elementos". Y a están primero las carpetas y después los archivos
+		
+		for (String archivo : archivos) {
+			elementos.add(archivo);
+		}
+		for (String carpeta : carpetas) {
+			elementos.add(carpeta);
+		}
+		return  elementos;
+	}
+	
+	
+/*	Comment:
  	Método: elimina
 	Descripción: elimina los ficheros y carpetas contenidas en la carpeta de trabajo. Si hay una carpeta 
 	con archivos dentro, accede a esta y borra los ficheros antes de borrar la carpeta. Las carpetas vacías 
@@ -119,23 +165,21 @@ public class App {
 	OUTPUT: Mensaje con resultado de la operacion		*/
 	public static void elimina (File directorio, Scanner teclado) throws IOException {
 		
-		ArrayList<String> elementos = new ArrayList<String>();	//Incluimos todos los elementos de la carpeta para buscarlo con la opcion del submenú después
+		ArrayList<String> elementos = ordenalista(directorio); 	//Ordenamos la lista a presentar
 		
 		System.out.println("\n3. ELIMINAR ELEMENTO\n   Indica qué elemento deseas eliminar de la carpeta \"" + directorio.getName() + "\"");
-		String[] listaArchivos = directorio.list();
-		
-		//Muestra por pantalla el contenido de la carpeta padre numerando los elementos y los añade al ArrayList
+
+		//Muestra por pantalla el contenido de la carpeta padre numerando los elementos
 		int cont = 0;
-		for ( String fichero : listaArchivos) {			
+		for ( String fichero : elementos) {			
 			cont++;
 			System.out.println("	"  + cont + ". " + fichero);
-			elementos.add(fichero);	
 		}
-
+	
 		System.out.print("\nElige un elemento: ");
 		int opcionmenu = Integer.parseInt(teclado.nextLine());
 
-		// Recorremos el ArrayList para buscar la posicion igual a la opcion elegida y
+		// Recorremos el ArrayList para buscar la posicion igual a la opcion elegida,
 		// convierte a objeto File y aplica condiciones
 		int cont2 = 0;
 		for (String elemento : elementos) {
@@ -143,23 +187,26 @@ public class App {
 			if (cont2 == opcionmenu) {
 				File f = new File(directorio, elemento);
 
-				// Condicion para borrar directorio
-				
+				// Condicion para borrar directorios
 				if (f.isDirectory()) {
-					String[] listaSubdirectorio = f.list(); // Crea lista de elementos del subdirectorio
-					int elemcarpeta = cuentaElementos (f);
-
-					if (elemcarpeta > 0) {		//borra directorio con archivos
+					int elemcarpeta = cuentaElementos (f);	// Llamamos a funcion cuentaElementos para ver si tiene elementos dentro
+					
+					//Borra directorios con elementos dentro
+					if (elemcarpeta > 0) {	
+						String[] listaSubdirectorio = f.list(); // Crea lista de elementos del subdirectorio
 						for (String subelemento : listaSubdirectorio) {
 							File fil = new File(f, subelemento);
 							fil.delete(); 		// borra ardchivos del subdirectorio
 							if (f.delete()) 	// Una vez vacio borra el directorio
 								System.out.println("	Elemento eliminado correctamente");
 						}
-					} else if (f.delete())		//borra directorio vacio
+					//Borra directorio vacío	
+					} else if (f.delete())		
 						System.out.println("	Elemento eliminado correctamente");
-				} else {
-					if (f.delete()) { 			// borra archivos
+				} 
+				//Borrar archivos
+				else {
+					if (f.delete()) { 			
 						System.out.println("	Elemento eliminado correctamente");
 					} else
 						System.out.println("	Elemento NO eliminado");
@@ -176,7 +223,6 @@ public class App {
 	public static void subMenu(Scanner teclado, String [] args) {
 
 		//Pasamos a String con path a objeto Path y así poder extraer el nombre de la nueva carpeta contenedora
-		//Path nuevopath = Paths.get(carpetapath);
 		Path nuevopath = Paths.get(args[1]);
 
 		int opcion2 = 1;
@@ -274,6 +320,7 @@ public class App {
 		ArrayList<String> listaarchivos = new ArrayList<String>();
 		
 		String[] listaArchivos = directorio.list(); // crea una lista con el contenido del directorio
+
 		System.out.println("\n1. INFORMACION DE CARPETA\n   Contenido de \"" + directorio.getName() + "\"\n");
 
 		String tipo = "", extension = "", tamanyo = "", espacio = "";
@@ -322,6 +369,7 @@ public class App {
 	OUTPUT:   String formateado para incluir en las listas de getInformacion		*/
 	public static String getStringInfo(String nombre, String tipo, int elementos, String tamanyo, String espacio,
 			String fechamodif, String oculto, String rutaabsoluta, File f) {
+		
 		//En caso de varios elementos lo cambia a plural
 		String elem = "";
 		if (elementos == 1)
@@ -345,22 +393,21 @@ public class App {
 	
 /*	Comment:
  	Método: espacioDisco
-	Descripción: obtiene el espacio total y disponible y calcula el ocupado. Se pasa a GB para presentar
-	y se formatea para devolver un String a getInformacion.
+	Descripción: obtiene el espacio total y disponible y calcula el ocupado. Se pasa a GB (1e-9) 
+	para presentar y se formatea para devolver un String a getInformacion.
 	INPUT: 	Objeto File de la iteración actual de getInformación
 	OUTPUT: String montado con los 3 datos */
 	public static String espacioDisco(File f) {
 			
-		long esptotal = f.getTotalSpace()/1000000000;		//pasamos a GB dividiendo por 1e-9
+		long esptotal = f.getTotalSpace()/1000000000;		
 		long espdisponible = f.getUsableSpace()/1000000000;
 		long espocupado = (esptotal - espdisponible);
 		
-		String espaciototal = Long.toString(esptotal); 	//convertimos a String dando formato al numero
+		String espaciototal = Long.toString(esptotal); 		
 		String espaciodisponible = Long.toString(espdisponible);
 		String espacioocupado = Long.toString(espocupado);
 
 		String salida = espacioocupado + " GB ocupados		" + espaciodisponible + " GB disponibles	" + espaciototal + " GB totales	";
-		
 		return salida;
 	}
 
