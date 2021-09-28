@@ -12,6 +12,11 @@ public class App {
 
 	static String carpetapath;
 	
+/*	Comment:
+ 	Método: main		
+	Descripción: lanza el menú principal de opciones llamando a los demás métodos directa o indirectamente.
+	INPUT:	ruta de acceso a la carpeta de trabajo desde argumento
+	OUTPUT: menú principal de opciones  */	
 	public static void main(String[] args) throws IOException {
 
 		File directorio = new File(args[0]);
