@@ -2,13 +2,9 @@ package es.florida.AE02;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -26,13 +22,11 @@ public class Modelo {
 	public Modelo() {
 		fichero_lectura = "AE02_T1_2_Streams_Groucho.txt";
 		fichero_escritura = "Groucho_copia.txt";
-		//fichero_temporal ="temporal";
 	}
 	
+
 	
-	
-	
-	//Métodos para pasar el nombre de los ficheros a Principal ya que son "private" Getters.
+	//Métodos para pasar el nombre de los ficheros a Principal, son Getters.
 	public String ficheroLectura() {
 		return fichero_lectura;
 	}
@@ -40,24 +34,17 @@ public class Modelo {
 	public String ficheroEscritura() {
 		return fichero_escritura;
 	}
+
+
 	
-	public String ficheroTemporal() {
-		return fichero_temporal;
-	}
-	
-	
-	
-	
-	
-	/*
-	 * Metodo para leer el fichero y almacenarlo en una lista que es la que devuelve
-	 */
+	/* Metodo para leer el fichero y almacenarlo en una lista que es la que se devuelve*/
 	public ArrayList<String> contenidofichero(String fichero) {
 		
 		// Lista donde incluimos las líneas que va leyendo
 		ArrayList<String> contenidofichero = new ArrayList<String>(); 
 
 		try {
+			//Lectura del fichero
 			File f = new File(fichero);
 			FileReader fr = new FileReader(f);
 			BufferedReader br = new BufferedReader(fr);
@@ -74,7 +61,6 @@ public class Modelo {
 			fr.close();
 
 		} catch (Exception e) {
-
 			JOptionPane.showMessageDialog(new JFrame(), e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		return contenidofichero;
@@ -96,7 +82,7 @@ public class Modelo {
 			if (lin.contains(palabra)) {
 				while (linea.contains(palabra) == true) {
 					int index = linea.indexOf(palabra);
-					linea = linea.substring(index + longitud);
+					linea = linea.substring(index + longitud); //Le añadimos la longitud de la palabra para que no vuelva a detectarla
 					cont++;
 				}
 			}
@@ -110,14 +96,15 @@ public class Modelo {
 	public ArrayList<String> reemplazarTexto(ArrayList<String> contenidofichero, String palabrabuscada, String textoReemplazar) {
 
 		ArrayList<String> ficheroTextoSustituido = new ArrayList<String>();
+		
 		String palabra = palabrabuscada.toLowerCase();
 
-		for (String lin : contenidofichero) {
-			String linea = lin.toLowerCase(); // pasa toda la linea a minúsculas para hacer la busqueda
-			if (linea.contains(palabra)) {
+		for (String linea : contenidofichero) {
+			String lineacomprobacion = linea.toLowerCase(); // pasa toda la linea a minúsculas para hacer la busqueda
+			if (lineacomprobacion.contains(palabra)) {
 				linea = linea.replaceAll(palabra, textoReemplazar);
 			}	
-			ficheroTextoSustituido.add(linea);
+			ficheroTextoSustituido.add(linea); //Comparamos en minúsculas pero enviamos a la lista la palabra original.
 		}
 		return ficheroTextoSustituido;
 	}
@@ -125,37 +112,22 @@ public class Modelo {
 		
 	
 	
-	//Este método lee el texto del fichero de lectura y lo copia en el fichero de escritura añadiendo el texto que indiquemos.
-	public void anyadirTexto(ArrayList<String> textoSustituido) {
+	//Este método lee el array con el texto ya sustituido y lo copia en el fichero de escritura.
+	public void anyadirTexto(ArrayList<String> contenidofichero, String palabrabuscada, String textoReemplazar) {
+
 		try {
-			//for (String line : textoSustituido) {
-				File f1 = new File (textoSustituido);
-				
-				// File f1 = new File(ficheroLectura());
-				File f2 = new File(ficheroEscritura());
+			//Sin Buffer porque leemos línea a línea
+			FileWriter fw = new FileWriter(ficheroEscritura()); 
+		
+			//Invocamos en el bucle al método "reemplazarTexto"
+			for (String linea : reemplazarTexto(contenidofichero, palabrabuscada, textoReemplazar)) {
+				fw.write(linea + "\n");	//Copiamos linea a linea de la lista en el fichero de escritura
+				System.out.println(linea);
+			}
+			fw.close();
 
-				FileReader fr = new FileReader(f1);
-				BufferedReader br = new BufferedReader (fr);
-
-				FileWriter fw = new FileWriter(f2);
-				BufferedWriter bw = new BufferedWriter(fw);
-
-				String linea = br.readLine();
-
-				while (linea != null) {
-					bw.write(linea);
-					bw.newLine();
-					linea = br.readLine();
-				}
-
-				br.close();
-				bw.close();
-				fr.close();
-				fw.close();
-			//}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(new JFrame(), e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
-
 	}
 }

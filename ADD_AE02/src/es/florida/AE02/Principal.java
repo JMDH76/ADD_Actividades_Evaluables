@@ -16,21 +16,17 @@ public class Principal {
 			System.out.println(l);
 			cont++;
 				}
-		System.out.println("\n" + cont + " lineas");
-		
-		//Añade texto al fichero nuevo
-		//modelo.anyadirTexto("Hola caracola");
+		//System.out.println("\n" + cont + " lineas");
 		
 		
 		//Cuenta las palabras
-		String palabrabuscada = "no";
-		System.out.println("La palabra \"" + palabrabuscada + "\" se repite "   + " " + modelo.buscarPalabra(modelo.contenidofichero(args[0]), palabrabuscada) + " veces en el texto\n");
-		
-		
+		String palabrabuscada = "parte";
+		System.out.println("La palabra \"" + palabrabuscada + "\" aparece " + modelo.buscarPalabra(modelo.contenidofichero(args[0]), palabrabuscada) + " veces en el texto\n");
+				
 		
 		//Reemplaza texto
-		String textoReemplazar = "XX";
-		modelo.reemplazarTexto(modelo.contenidofichero(args[0]), palabrabuscada, textoReemplazar);
+		String textoReemplazar = "*******";
+		modelo.anyadirTexto(modelo.contenidofichero(args[0]), palabrabuscada, textoReemplazar);
 		
 		
 	}
