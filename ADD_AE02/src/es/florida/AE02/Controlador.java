@@ -26,7 +26,9 @@ public class Controlador {
 		ficheroEscritura = modelo.ficheroEscritura();
 		
 		mostrarFichero(ficheroLectura, 1);
-		//actionListenerBuscar = new ActionListener() ;
+//		actionListenerBuscar = new ActionListener() {
+//			
+//		}
 	
 	
 	}
