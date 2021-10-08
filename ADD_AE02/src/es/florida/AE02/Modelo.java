@@ -69,9 +69,13 @@ public class Modelo {
 	/*Metodo busca los caracteres consecutivos dentro del texto aunque estén incluidos dentro de una palabara*/
 	public int buscarPalabra(String palabrabuscada) {
 		
+		
 		ArrayList<String> textooriginal = contenidofichero(ficheroLectura());
 		
-		String palabra = palabrabuscada.toLowerCase();//hay que pasar la palabra del cajón de la aplicacion. La pasamos a minúsculas.
+		String palabra="";
+		
+		if (palabrabuscada != "") palabra = palabrabuscada.toLowerCase();//hay que pasar la palabra del cajón de la aplicacion. La pasamos a minúsculas.
+		else palabra =" ";
 		int longitud = palabra.length();
 		int cont = 0;
 		
@@ -101,10 +105,11 @@ public class Modelo {
 		ArrayList<String> ficheroTextoSustituido = new ArrayList<String>();
 		
 		String palabra = palabrabuscada.toLowerCase();
-
+			
 		for (String linea : textooriginal) {
 			String lineacomprobacion = linea.toLowerCase(); // pasa toda la linea a minúsculas para hacer la busqueda
 			if (lineacomprobacion.contains(palabra)) {
+						
 				linea = lineacomprobacion.replaceAll(palabra, textoReemplazar);
 			}	
 			ficheroTextoSustituido.add(linea); //Comparamos en minúsculas pero enviamos a la lista la palabra original.
@@ -116,7 +121,7 @@ public class Modelo {
 	
 	
 	//Este método lee el array con el texto ya sustituido y lo copia en el fichero de escritura.
-	public void anyadirTexto(String palabrabuscada, String textoReemplazar) {
+	public void copiarfichero(String palabrabuscada, String textoReemplazar) {
 
 		try {
 			//Sin Buffer porque leemos la lista línea a línea
