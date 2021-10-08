@@ -1,9 +1,11 @@
 package es.florida.AE02;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -124,13 +126,14 @@ public class Modelo {
 	public void copiarfichero(String palabrabuscada, String textoReemplazar) {
 
 		try {
+			
 			//Sin Buffer porque leemos la lista línea a línea
 			FileWriter fw = new FileWriter(ficheroEscritura()); 
 		
 			//Invocamos en el bucle al método "reemplazarTexto"
 			for (String linea : reemplazarTexto(palabrabuscada, textoReemplazar)) {
 				fw.write(linea + "\n");	//Copiamos linea a linea de la lista en el fichero de escritura
-				System.out.println(linea);
+				//System.out.println(linea);
 			}
 			fw.close();
 
