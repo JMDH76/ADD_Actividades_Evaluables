@@ -18,11 +18,16 @@ public class Vista {
 	private JTextArea textArea_Modificado;
 
 	
+	//Inicializa la clase Vista
 	public Vista() {
 		initialize();
 	}
 	
-
+	
+/*	METODO:	 initialize
+	DESCRIPCION: Inicializa la parte gráfica del app ubicando todos 
+	los componentes gráficos (TextArea, textFields, botones...)
+	 */
 	private void initialize() {
 		
 		frame = new JFrame();
@@ -73,6 +78,8 @@ public class Vista {
 		this.frame.setVisible(true);
 	}
 	
+	
+	/*Getters para optener los componentes graficos*/
 	public JButton getBtnBuscar() {
 		return btnBuscar;
 	}
