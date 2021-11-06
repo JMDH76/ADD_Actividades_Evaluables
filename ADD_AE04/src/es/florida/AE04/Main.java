@@ -13,7 +13,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Main {
 
@@ -24,11 +23,12 @@ public class Main {
 		ArrayList<Libro> libros = new ArrayList<Libro>();
 
 		try {
+			//Conexion a BDD
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/add_ae04_biblioteca", "root", "");
-			
 			comprobarConexion(con) ;
 
+			//Copia del fichero
 			File f = new File("src\\es\\florida\\AE04\\Datos_CSV\\AE04_T1_4_JDBC_Datos.csv");
 			FileReader fr = new FileReader(f);
 			BufferedReader br = new BufferedReader(fr);
@@ -37,6 +37,7 @@ public class Main {
 			String dato = "";
 			int index = -1;
 
+			//Creamos objetos libro
 			while (linea != null) {
 				String datoslibro[] = new String[6];
 				
@@ -53,7 +54,7 @@ public class Main {
 				libros.add(libro);
 				linea = br.readLine();
 			}
-
+			 //Recorremos Array con objetos libro y completamos la instruccion SQL para importar el fichero
 			int cont = 1;
 			for (Libro libro : libros) {
 
@@ -71,7 +72,7 @@ public class Main {
 				cont++;
 			}
 			
-			//Consulta 1.
+			//Consulta predefinida 1. Publicaciones de escritores nacidos antes de 1950
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT titulo, autor, anyo_publicacion FROM `libros` WHERE anyo_nacimiento < '1950'");
 			
@@ -82,7 +83,7 @@ public class Main {
 				System.out.println(rs.getString(1) + separadordatos + rs.getString(2) + separadordatos + rs.getString(3));
 			}
 			
-			//Consulta 2.
+			//Consulta predefionioda 2. Editoriales que han publicado en el siglo XXI.
 			ResultSet rs2 = stmt.executeQuery("SELECT editorial, COUNT(titulo) AS 'Libros' FROM `libros` WHERE anyo_publicacion > '2000' GROUP BY editorial");
 		
 			System.out.println();
@@ -95,7 +96,7 @@ public class Main {
 				System.out.println(rs2.getString(1)  + separadordatos + rs2.getString(2));
 			}
 			
-			//Consulta libre
+			//Consulta libre. Introducimos la consulta SQL por teclado. La ejecuta y presenta resultado por pantalla
 			String consulta = "";
 			BufferedReader brconsulta = new BufferedReader(new InputStreamReader(System.in));
 			System.out.println();
@@ -111,7 +112,6 @@ public class Main {
 				ResultSet rs3 = stmt.executeQuery(consulta);
 				
 				int numerocolumnas = titulosColumnas(rs3);
-				
 				while (rs3.next()) {
 					for (int i = 1; i <= numerocolumnas; i++) {
 						if (i != numerocolumnas)  System.out.print(rs3.getString(i) + separadordatos);
@@ -138,7 +138,12 @@ public class Main {
 	}
 
 
-	
+	/*Método titulosColumnas()
+	 * ACTION: obtiene los nombres de las columnas de la consulta y los escribe por pantalla 
+	 * para la presentacion de datos. Devuelve un Int con el número de columnas que devuelve 
+	 * la consulta.
+	 * INPUT:	Objeto ResultSet con la consulta
+	 * OUTPUT:	Devuelve el número de columnas y escribe en pantalla el titulo de las columnas*/
 	public static int titulosColumnas(ResultSet rs) {
 		
 		int numerocolumnas=0;
@@ -161,9 +166,12 @@ public class Main {
 	
 
 	/*
-	 * Metodo ComprobarConexion() ACTION: comprueba si se ha conectado con la BDD.
+	 * Metodo ComprobarConexion() 
+	 * ACTION: 	comprueba si se ha conectado con la BDD.
 	 * Si la vble "con" es null es uqe no se ha conectado. INPUT: recibe el objeto
-	 * Connection con. OUTPUT: Devuelve un mensaje con el resultado de l aconexion.
+	 * Connection con. OUTPUT: Devuelve un mensaje con el resultado de la conexion.
+	 * INPUT: 	Objeto Connect.
+	 * OUTPUT:	Mensaje con resultado de la conexion.
 	 */
 	public static void comprobarConexion(Connection con) {
 		if (!con.equals(null))
