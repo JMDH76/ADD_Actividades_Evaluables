@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<configurations>
+    <config1>
+      <url>jdbc:mysql://localhost:3306/productos</url>    
+      <user>root</user>
+      <password></password>
+    </config1>
+
+</configurations>
