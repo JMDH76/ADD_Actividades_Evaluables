@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -91,8 +92,9 @@ public class App {
 				try {
 					id = Integer.parseInt(br.readLine());
 					Libro libro = (Libro) session.get(Libro.class, id);
-
-					System.out.println(" Detalle libro con Id " + id + ":\n ------------------------" + libro.getLibroText());
+					
+					if (libro == null) System.out.println(" Error. ID inexistente. Indique una 'Id' valida\n");
+					else System.out.println(" Detalle libro con Id " + id + ":\n ------------------------" + libro.getLibroText());
 
 				} catch (NumberFormatException e) {
 					System.out.println(" Error. Debe introducir un número");
@@ -109,6 +111,7 @@ public class App {
 				Serializable id = session.save(lib);
 				System.out.println("\n Creado nuevo registro con Id: " + id + "\n");
 
+				
 			// Editar atributos por 'id'. Si pulsamos 'Enter' y dejamos vacío toma el dato original
 			} else if (opcion == 4) {
 
@@ -141,9 +144,12 @@ public class App {
 					System.out.println("\n Datos Id " + lib.getId() + " actualizados:\n -------------------------" + lib.getLibroText());
 
 				} catch (NumberFormatException e) {
-					System.out.println(" Error. Debe introducir un número");
+					System.out.println(" Error. Debe introducir un número\n");
+				} catch (ObjectNotFoundException e) {
+					System.out.println(" Error. ID inexistente. Indique una 'Id' valida.\n");
 				}
 
+				
 			// Borrar registro por 'id'
 			} else if (opcion == 5) {
 
@@ -151,14 +157,20 @@ public class App {
 				int id;
 				try {
 					id = Integer.parseInt(br.readLine());
-					Libro lib = new Libro();
-					lib.setId(id);
-					session.delete(lib);
-					System.out.println("\n El elemento con Id " + lib.getId() + " se ha borrado correctamente.\n");
 					
+					// Verifica si existe la id para que no provoque error
+					Libro libro = (Libro) session.get(Libro.class, id);
+					if (libro == null) System.out.println(" Error. ID inexistente. Indique una 'Id' valida.\n");
+					else {
+						Libro lib = new Libro();
+						lib.setId(id);
+						session.delete(lib);
+						System.out.println("\n El elemento con Id " + lib.getId() + " se ha borrado correctamente.\n");
+					}
 				} catch (NumberFormatException | IOException e) {
 					System.out.println(" Error. Debe introducir un número");
-				}
+				} 
+				
 
 			// Salir de la plicación. Sale del bucle
 			} else if (opcion == 6) {
@@ -173,6 +185,7 @@ public class App {
 				opcion = 0;
 			}
 
+			
 			// Cuando terminan de ejecutarse las instrucciones de la opción elegida hacemos
 			// commit y cerramos la sesion
 			session.getTransaction().commit();

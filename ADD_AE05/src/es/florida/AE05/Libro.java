@@ -93,5 +93,4 @@ public class Libro {
 		
 		return libro;
 	}
-
 }
