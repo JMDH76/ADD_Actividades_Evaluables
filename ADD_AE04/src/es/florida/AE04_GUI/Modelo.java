@@ -32,7 +32,7 @@ public class Modelo {
 	}
 
 	/*Método importarCSV()
-	 * ACTION:	Are el fichero CSV lo copia y crea un objeto libro con cada linea del fichero
+	 * ACTION:	Abre el fichero CSV lo copia y crea un objeto libro con cada linea del fichero
 	 * y los incluye en un ArrayList de libros; luego lo recorremos y extraemos los parámetros 
 	 * de cada objeto libro y los pasamos a la instruccion SQL para que los inserte en el BDD
 	 * INPUT: String con la ruta del fichero que hay que importar
@@ -103,7 +103,7 @@ public class Modelo {
 	 * OUTPUT: ArrayList con con el resultado de la consulta*/
 	public ArrayList<String> consultaDefinida1() {
 		
-		ArrayList<String>lineasconsulta = new ArrayList<String>();
+		ArrayList<String> lineasconsulta = new ArrayList<String>();
 		try {
 			Connection con = abrirConexion();
 			Statement  stmt = con.createStatement();
