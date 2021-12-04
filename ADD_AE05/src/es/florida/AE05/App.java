@@ -151,26 +151,20 @@ public class App {
 
 				
 			// Borrar registro por 'id'
-			} else if (opcion == 5) {
+		} else if (opcion == 5) {
 
-				System.out.print("\n Indique la id del libro que desea borrar: ");
-				int id;
-				try {
-					id = Integer.parseInt(br.readLine());
-					
-					// Verifica si existe la id para que no provoque error
-					Libro libro = (Libro) session.get(Libro.class, id);
-					if (libro == null) System.out.println(" Error. ID inexistente. Indique una 'Id' valida.\n");
-					else {
-						Libro lib = new Libro();
-						lib.setId(id);
-						session.delete(lib);
-						System.out.println("\n El elemento con Id " + lib.getId() + " se ha borrado correctamente.\n");
-					}
-				} catch (NumberFormatException | IOException e) {
-					System.out.println(" Error. Debe introducir un número");
-				} 
-				
+			System.out.print("\n Indique la id del libro que desea borrar: ");
+			try {
+				int id = Integer.parseInt(br.readLine());
+
+				Libro lib = new Libro(); // se crea un objeto vacio al que se le asigna la id que nos han pasado
+				lib.setId(id);
+				session.delete(lib);
+				System.out.println("\n El elemento con Id " + lib.getId() + " se ha borrado correctamente.\n");
+
+			} catch (NumberFormatException | IOException e) {
+				System.out.println(" Error. Debe introducir un número");
+			}
 
 			// Salir de la plicación. Sale del bucle
 			} else if (opcion == 6) {
