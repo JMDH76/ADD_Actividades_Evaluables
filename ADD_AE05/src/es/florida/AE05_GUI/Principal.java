@@ -1,6 +1,5 @@
 package es.florida.AE05_GUI;
 
-
 public class Principal {
 
 	public static void main(String[] args) {
@@ -9,5 +8,4 @@ public class Principal {
 		Modelo modelo = new Modelo();
 		Controlador controlador = new Controlador(modelo, vista);
 	}
-
 }

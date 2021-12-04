@@ -5,14 +5,13 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import java.awt.Color;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.JTextArea;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
-import javax.swing.JSeparator;
+
 
 public class Vista {
 
@@ -97,7 +96,7 @@ public class Vista {
 
 		JPanel panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(153, 153, 153), 1, true));
-		panel.setBounds(10, 154, 483, 64);
+		panel.setBounds(10, 271, 483, 64);
 		panel_editar.add(panel);
 		panel.setLayout(null);
 
@@ -132,7 +131,7 @@ public class Vista {
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new LineBorder(new Color(153, 153, 153), 1, true));
-		panel_1.setBounds(10, 239, 483, 88);
+		panel_1.setBounds(10, 159, 483, 88);
 		panel_editar.add(panel_1);
 		panel_1.setLayout(null);
 
@@ -212,18 +211,16 @@ public class Vista {
 		lblId.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblId.setHorizontalAlignment(SwingConstants.RIGHT);
 
-	
 		btnConsultaRef = new JButton("Consultar");
 		btnConsultaRef.setBounds(372, 6, 101, 23);
 		panel_2.add(btnConsultaRef);
 
 		JLabel lblBorrarRegistro = new JLabel("AUTOR");
-		lblBorrarRegistro.setBounds(10, 134, 57, 21);
+		lblBorrarRegistro.setBounds(10, 251, 57, 21);
 		panel_editar.add(lblBorrarRegistro);
 		lblBorrarRegistro.setHorizontalAlignment(SwingConstants.LEFT);
 		lblBorrarRegistro.setFont(new Font("Tahoma", Font.BOLD, 11));
 
-		
 		JLabel lblConsultas = new JLabel("Agregar / Actualizar / Borrar");
 		lblConsultas.setBounds(10, 115, 231, 14);
 		panel_editar.add(lblConsultas);
@@ -237,7 +234,7 @@ public class Vista {
 		JLabel lblPublicacion = new JLabel("PUBLICACION");
 		lblPublicacion.setHorizontalAlignment(SwingConstants.LEFT);
 		lblPublicacion.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblPublicacion.setBounds(10, 220, 86, 21);
+		lblPublicacion.setBounds(10, 140, 86, 21);
 		panel_editar.add(lblPublicacion);
 		
 		btnLimpiar = new JButton("Limpiar");
@@ -272,75 +269,60 @@ public class Vista {
 	
 
 	// GETTERS
-	
+
 	public JTextArea getTextArea() {
 		return textArea;
 	}
 
-	public JTextField getTextIdConsulta() {	
-
-//		if (getTextIdConsulta().getText().toString().equals("")) {
-//			getTextIdConsulta().setText("Hola");
-//		}
-		
-		//		try {
-//			int id = Integer.parseInt(txtField_IdConsulta.getText());
-//		} catch (NumberFormatException e) {
-//			JOptionPane.showMessageDialog(null, "Error. Debe introducir una ID valida");
-//		}
+	public JTextField getTextIdConsulta() {
 		return txtField_IdConsulta;
 	}
-	
+
 	public JTextField getTextTitulo() {
 		return txtField_Titulo;
 	}
-	
-//	public void setTextTitulo(JTextField txtField_Titulo) {
-//		this.txtField_Titulo = txtField_Titulo;
-//	}
-	
+
 	public JTextField getTextAutor() {
 		return txtField_Autor;
 	}
-	
+
 	public JTextField getTextNacimnineto() {
 		return txtField_Nacimiento;
 	}
-	
+
 	public JTextField getTextPublicacion() {
 		return txtField_Publicacion;
 	}
-	
+
 	public JTextField getTextEditorial() {
 		return txtField_Editorial;
 	}
-	
+
 	public JTextField getTextPaginas() {
 		return txtField_Paginas;
 	}
-	
+
 	public JButton getBtnConsulta() {
 		return btnConsultaRef;
 	}
-	
+
 	public JButton getBtnCatalogo() {
-		return btnCatalogo ;
+		return btnCatalogo;
 	}
-	
+
 	public JButton getBtnActualizar() {
-		return btnActualizar  ;
+		return btnActualizar;
 	}
-	
+
 	public JButton getBtnAgregar() {
-		return btnAgregar  ;
+		return btnAgregar;
 	}
-	
+
 	public JButton getBtnBorrar() {
-		return btnBorrar  ;
+		return btnBorrar;
 	}
-	
+
 	public JButton getBtnLimpiar() {
-		return btnLimpiar  ;
+		return btnLimpiar;
 	}
 }
-
