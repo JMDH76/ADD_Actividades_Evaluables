@@ -8,9 +8,6 @@ import javax.swing.JOptionPane;
 
 import org.bson.Document;
 
-import com.mongodb.client.MongoCollection;
-
-
 public class Controlador {
 
 	private Modelo modelo;
@@ -25,29 +22,155 @@ public class Controlador {
 		control();
 	}
 
+	/*FUNCTION: control()
+	 * ACTION: asigna los ActionListener correspondientes a la interfaz gráfica y ejecuta
+	 * los comandos correspondientes para obtener el resultado deseado cuando presionamos
+	 * un botón en la interfaz.
+	 * INPUT:	diferentes informaciones en función de los comandos que ejecute.
+	 * OUTPUT:	diferentes informaciones en función de los comandos que ejecute.*/
 	public void control() {
 
-		mostrarCatalogo(); // Mostramos listado de libros en TextArea al abrir la GUI
+		// Muestra de incio el catálogo completo y desactiva los botones de edición
+		mostrarCatalogo();
+		vista.getBtnBorrar().setEnabled(false);
+		vista.getBtnActualizar().setEnabled(false);
 
 		// Actualiza el listado de la base de datos que se muestra
 		actionListenerCatalogo = new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
-				//modelo.quitarBlancos(coleccion);
+
 				mostrarCatalogo();
 			}
 		};
 		vista.getBtnCatalogo().addActionListener(actionListenerCatalogo);
+
+		// Consulta libro: presenta los datos de la id solicitada en el campo correspondiente
+		actionListenerLibro = new ActionListener() {
+			public void actionPerformed(ActionEvent actionEvent) {
+
+				// Activa botones de edidción
+				vista.getBtnBorrar().setEnabled(true);
+				vista.getBtnActualizar().setEnabled(true);
+
+				String id = vista.getTextIdConsulta().getText();
+				String[] libro = (String[]) modelo.detalleLibro(id);
+				if (libro[0].equals("1")) {
+					vista.getTextTitulo().setText(libro[1]);
+					vista.getTextAutor().setText(libro[2]);
+					vista.getTextNacimnineto().setText(libro[3]);
+					vista.getTextPublicacion().setText(libro[4]);
+					vista.getTextEditorial().setText(libro[5]);
+					vista.getTextPaginas().setText(libro[6]);
+				} else {
+					JOptionPane.showMessageDialog(null, "Error. ID inexistente");
+				}
+			}
+		};
+		vista.getBtnConsulta().addActionListener(actionListenerLibro);
+
+		// Nuevo libro: crea y guarda en la BDD un nuevo documento, actualiza el catálogo
+		actionListenerNuevoLibro = new ActionListener() {
+			public void actionPerformed(ActionEvent actionEvent) {
+
+				Document doc = capturarTexto(0);
+				String id = modelo.anyadirLibro(doc);
+				JOptionPane.showMessageDialog(null,
+						"Libro añadido correctamente.\nNueva referencia:\n\t\"" + id + ". " + doc.getString("Titulo"));
+				mostrarCatalogo();
+				limpiarCampos();
+			}
+		};
+		vista.getBtnAgregar().addActionListener(actionListenerNuevoLibro);
+
+		// Editar libro: edita cualquier atributo del libro directamente en el
+		// JTextField luego sustituye esta info en la BDD
+		actionListenerEditarLibro = new ActionListener() {
+			public void actionPerformed(ActionEvent actionEvent) {
+
+				Document doc = capturarTexto(1);
+				modelo.actualizarCampo(doc);
+				;
+				String id = doc.getString("Id");
+				JOptionPane.showMessageDialog(null,
+						"Libro: " + id + ". " + doc.getString("Titulo") + "\nActualizado correctamente");
+				mostrarCatalogo();
+				limpiarCampos();
+			}
+		};
+		vista.getBtnActualizar().addActionListener(actionListenerEditarLibro);
+
+		// Borrar libro: borra documento de la BDD indicando la ID
+		actionListenerBorrar = new ActionListener() {
+			public void actionPerformed(ActionEvent actionEvent) {
+
+				String id = vista.getTextIdConsulta().getText();
+				boolean borrado = modelo.borrarLibro(id);
+
+				if (!borrado)
+					JOptionPane.showMessageDialog(null, "El libro con id " + id + " se ha borrado correctamente");
+				else
+					JOptionPane.showMessageDialog(null, "Libro con id " + id + " no se ha podido borrar");
+				limpiarCampos();
+				mostrarCatalogo();
+			}
+		};
+		vista.getBtnBorrar().addActionListener(actionListenerBorrar);
+
+		// Limpiar campos: borra todos los campos para dejarlos preparados para escribir
+		// y desactiva
+		// los botones de edición
+		actionListenerLimpiar = new ActionListener() {
+			public void actionPerformed(ActionEvent actionEvent) {
+
+				limpiarCampos();
+			}
+		};
+		vista.getBtnLimpiar().addActionListener(actionListenerLimpiar);
 	}
 	
 	
-	
+	/* METODO: 	capturarTexto()
+	 * ACTION:	extrae los valores de los JTextField, los convierte a String y crea un 
+	 * objeto Document.
+	 * INPUT: 	recibe un Integer que indica el constructor a usar; 1 > constructor sin 'id' / 2 > constructor con 'id'
+	 * OUTPUT: 	devuelve un objeto Document creado con la información delos JTextField de la GUI*/
+	public Document capturarTexto(int n) {
+
+		String id = vista.getTextIdConsulta().getText().toString();
+		String titulo = vista.getTextTitulo().getText().toString();
+		String autor = vista.getTextAutor().getText().toString();
+		String nacimiento = vista.getTextNacimnineto().getText().toString();
+		String publicacion = vista.getTextPublicacion().getText().toString();
+		String editorial = vista.getTextEditorial().getText().toString();
+		String paginas = vista.getTextPaginas().getText().toString();
+
+		Document doc = new Document();
+		if (n == 0) {
+			doc.append("Titulo", titulo);
+			doc.append("Autor", autor);
+			doc.append("Anyo_Nacimiento", nacimiento);
+			doc.append("Anyo_Publicacion", publicacion);
+			doc.append("Editorial", editorial);
+			doc.append("Paginas", paginas);
+		} else if (n == 1) {
+			doc.append("Id", id);
+			doc.append("Titulo", titulo);
+			doc.append("Autor", autor);
+			doc.append("Anyo_Nacimiento", nacimiento);
+			doc.append("Anyo_Publicacion", publicacion);
+			doc.append("Editorial", editorial);
+			doc.append("Paginas", paginas);
+		}
+		return doc;
+	}
+
 	
 	/* METODO: 	mostrarCatalogo()
 	 * ACTION:	presenta el contenido de la BDD en el TextArea de la GUI
-	 * INPUT:	ArrayList de String con el contenido de la BDD
+	 * INPUT:	ArrayList de String con el contenido de la BDD desde Modelo.
 	 * OUTPUT:	Listado de objetos de la BDD en el TextArea. Fecha y Hora de la última actualización*/
 	public void mostrarCatalogo() {
-		
+
 		vista.getTextArea().setText("\n");
 		ArrayList<String> listaLibros = modelo.Catalogo();
 		for (String libro : listaLibros) {
@@ -56,37 +179,7 @@ public class Controlador {
 		vista.getTextArea().append("\n Ultima actualización:\n\t\t" + fechaActual());
 	}
 	
-	
-	
-	
-	
-	
-	/* METODO: 	capturarTexto()
-	 * ACTION:	extrae los valores de los JTextField, los convierte a String y crea un 
-	 * objeto libro empleando un constructor diferente en función de la información que
-	 * necesitemos.
-	 * INPUT: 	recibe un Integer que indica el constructor a usar; 1 > constructor con 'id' / 2 > constructor sin 'id'
-	 * OUTPUT: 	devuelve un objeto Libro creado con la información delos JTextField de la GUI*/
-//	public Libro capturarTexto(int indicador) {
-//
-//		Libro libro;
-//		String titulo = vista.getTextTitulo().getText().toString();
-//		String autor = vista.getTextAutor().getText().toString();
-//		String anyonacimiento = vista.getTextNacimnineto().getText().toString();
-//		String anyopublicacion = vista.getTextPublicacion().getText().toString();
-//		String editorial = vista.getTextEditorial().getText().toString();
-//		String paginas = vista.getTextPaginas().getText().toString();
-//		if (indicador != 0) {
-//			int id = Integer.parseInt(vista.getTextIdConsulta().getText());
-//			libro = new Libro(id, titulo, autor, anyonacimiento, anyopublicacion, editorial, paginas);
-//		} else
-//			libro = new Libro(titulo, autor, anyonacimiento, anyopublicacion, editorial, paginas);
-//		return libro;
-//	}
-	
-	
-	
-	
+
 	/* METODO:	fechaActual()
 	 * ACTION: 	obtiene la fecha y hora del momneto en que es invocado
 	 * INPUT:	nada
@@ -100,13 +193,12 @@ public class Controlador {
 	}
 	
 	
-	
-	
 	/* METODO:	limpiarCampos() 
 	 * ACTION:	borra el contenido de los JTextField escribiendo en blanco en cada uno de ellos(""). 
 	 * El campo de ID sólo lo borra si tiene texto si no, provoca un error. 
 	 * INPUT:	nada. 
-	 * OUTPUT: 	borra el contenido de los JTextField escribiendo ("") en cada uno*/
+	 * OUTPUT: 	borra el contenido de los JTextField escribiendo ("") en cada uno. Desactiva los
+	 * botones de edición*/
 	public void limpiarCampos() {
 
 		if (!vista.getTextIdConsulta().getText().toString().equals(""))
@@ -117,5 +209,8 @@ public class Controlador {
 		vista.getTextPublicacion().setText("");
 		vista.getTextEditorial().setText("");
 		vista.getTextPaginas().setText("");
+
+		vista.getBtnBorrar().setEnabled(false);
+		vista.getBtnActualizar().setEnabled(false);
 	}
 }

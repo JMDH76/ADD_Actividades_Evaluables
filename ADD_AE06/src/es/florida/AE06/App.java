@@ -39,12 +39,12 @@ public class App {
 		int opcion = 0;
 		boolean flag = false;
 		
-		//Conexión a BDD:
-		MongoClient mongoClient = new MongoClient("localhost", 27017); 			
-		MongoDatabase database = mongoClient.getDatabase("Biblioteca"); 		
+		// Conexión a BDD:
+		MongoClient mongoClient = new MongoClient("localhost", 27017);
+		MongoDatabase database = mongoClient.getDatabase("Biblioteca");
 		MongoCollection<Document> coleccion = database.getCollection("Libros");
-		
-		Thread.sleep(500);	//pausa para no intercalar mensaje con menu
+
+		Thread.sleep(500); // pausa para no intercalar mensaje con menu
 
 		while (flag == false) {
 			quitarBlancos(coleccion);
@@ -64,21 +64,14 @@ public class App {
 			}
 			
 			//Opciones:
-			if (opcion == 1) {
-				mostrarCatalogo(coleccion);
-			} else if (opcion == 2) {
-				mostrarPorId(coleccion);
-			} else if (opcion == 3) {
-				anyadirLibro(coleccion);
-			} else if (opcion == 4) {
-				actualizarCampo(coleccion);
-			} else if (opcion == 5) {
-				borrarLibro(coleccion);
-			} else if (opcion == 6) {
-				flag = true;
-			} else {
-				System.out.println("Ha indicado una opción incorrecta. Teclee una opción valida.\n");
-			}
+			if (opcion == 1) mostrarCatalogo(coleccion);
+			else if (opcion == 2) mostrarPorId(coleccion);
+			else if (opcion == 3) anyadirLibro(coleccion);
+			else if (opcion == 4) actualizarCampo(coleccion);
+			else if (opcion == 5) borrarLibro(coleccion);
+			else if (opcion == 6) flag = true;
+			else System.out.println("Ha indicado una opción incorrecta. Teclee una opción valida.\n");
+			
 			if (opcion < 6) {
 				System.out.println("\nPresione 'Enter' para volver al menú");
 				String enter = br.readLine();	
@@ -99,9 +92,9 @@ public class App {
 	public static void borrarLibro(MongoCollection<Document> coleccion) throws IOException {
 		
 		System.out.println("\n\nBORRAR UN LIBRO\n---------------");
-		
+
 		boolean idValida = false;
-		String id ="";
+		String id = "";
 		while (!idValida) {
 			System.out.print("Introduzca la Id del libro: ");
 			id = br.readLine();
@@ -109,11 +102,11 @@ public class App {
 			if (!idValida) System.out.println("ID inexistente. Introduzca una ID válida.\n");
 		}
 		
-		if(idValida) {
+		if (idValida) {
 			detalleLibro(coleccion, id);
-			System.out.print("\n¿Desea borrar el libro "+ id + "?  (s/n) ");
+			System.out.print("\n¿Desea borrar el libro " + id + "?  (s/n) ");
 			String confirm = br.readLine();
-			
+
 			if (confirm.toLowerCase().equals("s")) {
 				Bson query = eq("Id", id);
 				coleccion.deleteOne(query);
@@ -139,7 +132,7 @@ public class App {
 	 *  INPUT: 'coleccion' por parámetro / id del libro a modificar por consola.
 	 *  OUTPUT:	modifica los campos del 'documento' en la BDD.*/
 	public static void actualizarCampo(MongoCollection<Document> coleccion) throws IOException {
-		
+
 		String[] fields = { "Título", "Autor", "Año de nacimiento", "Año de publicacion", "Editorial", "Páginas" };
 		String campoFiltro = "Id";
 		String campo = "";
@@ -191,7 +184,7 @@ public class App {
 	
 	/*FUNCTION: idExists()
 	 * ACTION:	comprueba si un id existe en la coleccion recorriendala toda.
-	 * INPUT; recibe como parámetro la coleccion, el id seleccionado por el usuario.
+	 * INPUT:	recibe como parámetro la coleccion, el id seleccionado por el usuario.
 	 * OUTPUT:	booleano con true si existe la id y false si no existe */
 	public static boolean idExist(MongoCollection<Document> coleccion, String id) {
 		
@@ -199,9 +192,7 @@ public class App {
 		boolean Exists = false;
 		while (cursor.hasNext()) {
 			JSONObject obj = new JSONObject(cursor.next().toJson());
-			if(obj.getString("Id").equals(id)){
-				Exists = true;
-			} 
+			if(obj.getString("Id").equals(id)) Exists = true;
 		}
 		return Exists;
 	}
@@ -226,14 +217,14 @@ public class App {
 		String id = nextId(coleccion);
 		System.out.println("\nId asignada: " + id);
 		
-		titulo = (titulo != "") ? titulo : "N.D.";	
-		autor = (autor != "") ? autor : "N.D.";	
+		titulo = (titulo != "") ? titulo : "N.D.";
+		autor = (autor != "") ? autor : "N.D.";
 		nacimiento = (nacimiento != "") ? nacimiento : "N.D.";
 		publicacion = (publicacion != "") ? publicacion : "N.D.";
 		editorial = (editorial != "") ? editorial : "N.D.";
 		paginas = (paginas != "") ? paginas : "N.D.";
 		
-		Document doc = new Document();		
+		Document doc = new Document();
 		doc.append("Id", id);
 		doc.append("Titulo", titulo);
 		doc.append("Autor", autor);
@@ -241,7 +232,7 @@ public class App {
 		doc.append("Anyo_Publicacion", publicacion);
 		doc.append("Editorial", editorial);
 		doc.append("Paginas", paginas);
-		coleccion.insertOne(doc);	 
+		coleccion.insertOne(doc);
 	}
 	
 	/*FUNCTION: nextId()
@@ -250,19 +241,19 @@ public class App {
 	 * reciclar ids que se habían borrado aunque no las coloca ordenadas, los coloca al 
 	 * final de la BDD
 	 * INPUT:	'coleccion' por parámetro.
-	 * OUTPUT String con el número de la siguiente ID libre.*/
+	 * OUTPUT:	 String con el número de la siguiente ID libre.*/
 	public static String nextId(MongoCollection<Document> coleccion) {
-		
+
 		int nextIdValue = 0;
 		String nextId = "1";
-		
-		//Comprueba si la siguiente ID ya existe y le suma 1
+
+		// Comprueba si la siguiente ID ya existe y le suma 1
 		boolean flag = false;
 		while (!flag) {
 			if (idExist(coleccion, nextId) == true) {
-				nextIdValue = Integer.valueOf(nextId) + 1; 
+				nextIdValue = Integer.valueOf(nextId) + 1;
 				nextId = String.valueOf(nextIdValue);
-			} else	flag = true;
+			} else flag = true;
 		}
 		return nextId;
 	}
@@ -276,7 +267,7 @@ public class App {
 	 * todos los libros contenidos en la Coleccion.*/
 	public static void mostrarCatalogo(MongoCollection<Document> coleccion) {
 
-		String campoMostrar1 = "Id"; 					// Campos a mostrar
+		String campoMostrar1 = "Id";
 		String campoMostrar2 = "Titulo";
 		String id;
 		ArrayList<String> consulta = new ArrayList<>(); // Array con el resultado para mostrar
@@ -292,11 +283,11 @@ public class App {
 		}
 		cursor.close();
 		
-		//Presentacion ordenada:
+		// Presentacion ordenada:
 		int cont = 0;
 		Collections.sort(consulta);
 		System.out.println("\n\nCATALOGO:\n---------");
-		
+
 		for (String obj : consulta) {
 			System.out.println(obj);
 			cont++;
@@ -309,17 +300,17 @@ public class App {
 	 * el detelle del libro correspondiente llamando a la función detalleLibro(), esta última 
 	 * se ha separado en otra función para reciclar esa parte del código con otras funciones 
 	 * que también lo llaman.
-	 * INPUT: 'coleccion' por parámetro e ID por consola.
+	 * INPUT: 	'coleccion' por parámetro e ID por consola.
 	 * OUTPUT:	presenta los datos correspondientes al libro o mensaje de Id inexistente en su 
 	 * caso*/
 	public static void mostrarPorId(MongoCollection<Document> coleccion) throws IOException {
-		
+
 		boolean flag = false;
 		System.out.println("\n\nDETALLE LIBRO\n---------------");
 		while (!flag) {
 			System.out.print("Introduzca la Id del libro: ");
-			String id = br.readLine(); 
-	
+			String id = br.readLine();
+
 			boolean idValida = idExist(coleccion, id);
 			if (idValida) {
 				detalleLibro(coleccion, id);
@@ -332,12 +323,13 @@ public class App {
 	/*FUNCTIN:	detalleLibro()
 	 * ACTION:	crea el filtro y busca los detalles del 'Documento', con ellos monta un String
 	 * que presenta por pantalla con todos ordenados.
-	 * INPUT:	recibe por parámetro la 'coleccion' y la id introducida por consola*/
+	 * INPUT:	recibe por parámetro la 'coleccion' y la id introducida por consola
+	 * OUTPUT: 	presenta por pantalla un String con los datos del libro correspondiente a la id*/
 	public static void detalleLibro(MongoCollection<Document> coleccion, String id) {
-		
+
 		String consulta = "";
 		System.out.println("\nDATOS LIBRO CON ID " + id + ":\n----------------------");
-		
+
 		Bson query = eq("Id", id); // Filtro (eq = "igual id")
 		MongoCursor<Document> cursor = coleccion.find(query).iterator(); // Creamos puntero. Obtiene la BDD y la mete
 
@@ -351,8 +343,8 @@ public class App {
 			String editorial = obj.getString("Editorial");
 			String paginas = obj.getString("Paginas");
 
-			consulta = "Título:		" + titulo + "\nAutor:		" + autor + " (" + nacimiento
-					+ ")\nA. Publicación:	" + publicacion + "\nEditorial:	" + editorial + "\nPáginas:	" + paginas;
+			consulta = "Título:		" + titulo + "\nAutor:		" + autor + " (" + nacimiento + ")\nA. Publicación:	"
+					+ publicacion + "\nEditorial:	" + editorial + "\nPáginas:	" + paginas;
 			System.out.println(consulta);
 		}
 	}
@@ -365,10 +357,8 @@ public class App {
 
 		String[] fields = {"Titulo","Autor","Anyo_Nacimiento","Anyo_Publicacion","Editorial","Paginas"};
 		for(int i = 0; i<fields.length; i++) {
-			Bson query = eq(fields[i], "");
-			Bson query2 = eq(fields[i], " ");
+			Bson query = or(eq(fields[i], ""),eq(fields[i], " "));
 			coleccion.updateMany(query, new Document("$set", new Document(fields[i], "N.D.")));
-			coleccion.updateMany(query2, new Document("$set", new Document(fields[i], "N.D.")));
 		}
 	}
 }

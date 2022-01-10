@@ -1,4 +1,5 @@
 package es.florida.AE06_GUI;
+
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -10,7 +11,6 @@ import java.awt.Font;
 import javax.swing.JTextArea;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
-
 
 public class Vista {
 
@@ -29,7 +29,7 @@ public class Vista {
 	private JButton btnBorrar;
 	private JButton btnLimpiar;
 	private JTextArea textArea;
-	
+
 	public Vista() {
 		initialize();
 	}
@@ -120,7 +120,7 @@ public class Vista {
 		txtField_Nacimiento.setForeground(Color.BLACK);
 		txtField_Nacimiento.setHorizontalAlignment(SwingConstants.LEFT);
 		txtField_Nacimiento.setColumns(10);
-		
+
 		JLabel lblFechaNacimiento = new JLabel("\rA\u00F1o nacimiento");
 		lblFechaNacimiento.setBounds(0, 38, 108, 14);
 		panel.add(lblFechaNacimiento);
@@ -200,7 +200,7 @@ public class Vista {
 		txtField_IdConsulta.setBounds(118, 7, 46, 20);
 		panel_2.add(txtField_IdConsulta);
 		txtField_IdConsulta.setBackground(new Color(255, 255, 204));
-		txtField_IdConsulta.setHorizontalAlignment(SwingConstants.LEFT);
+		txtField_IdConsulta.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtField_IdConsulta.setForeground(Color.BLACK);
 		txtField_IdConsulta.setColumns(10);
 
@@ -235,11 +235,11 @@ public class Vista {
 		lblPublicacion.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblPublicacion.setBounds(10, 140, 86, 21);
 		panel_editar.add(lblPublicacion);
-		
+
 		btnLimpiar = new JButton("Limpiar");
-		btnLimpiar.setBounds(382, 15, 101, 23);
+		btnLimpiar.setBounds(382, 96, 101, 23);
 		panel_editar.add(btnLimpiar);
-		
+
 		JLabel lblNewLabel_1 = new JLabel("by Jos\u00E9 Manuel Dom\u00EDnguez Hern\u00E1ndez");
 		lblNewLabel_1.setForeground(new Color(169, 169, 169));
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -256,7 +256,7 @@ public class Vista {
 		lblNewLabel.setFont(new Font("Consolas", Font.BOLD | Font.ITALIC, 34));
 		lblNewLabel.setBounds(10, 11, 484, 74);
 		panel_3.add(lblNewLabel);
-		
+
 		JLabel lblGestinDeCatlogo = new JLabel("Gesti\u00F3n de cat\u00E1logo");
 		lblGestinDeCatlogo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblGestinDeCatlogo.setFont(new Font("Consolas", Font.BOLD | Font.ITALIC, 26));
@@ -265,7 +265,6 @@ public class Vista {
 
 		this.frmBiblioteca.setVisible(true);
 	}
-	
 
 	// GETTERS
 
@@ -325,4 +324,3 @@ public class Vista {
 		return btnLimpiar;
 	}
 }
-

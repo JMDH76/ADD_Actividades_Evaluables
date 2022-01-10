@@ -1,9 +1,9 @@
 [{
   "_id": {
-    "$oid": "61da0f1393ba5c1dd8d9633f"
+    "$oid": "61dcc49eaf9aa152a239f265"
   },
   "Id": "1",
-  "Titulo": "El senor de los anillos",
+  "Titulo": "El Senor de los Anillos",
   "Autor": "J.R.R. Tolkien",
   "Anyo_Nacimiento": "1890",
   "Anyo_Publicacion": "1950",
@@ -11,7 +11,7 @@
   "Paginas": "1392"
 },{
   "_id": {
-    "$oid": "61da0f1393ba5c1dd8d96340"
+    "$oid": "61dcc49eaf9aa152a239f266"
   },
   "Id": "2",
   "Titulo": "El juego de Ender",
@@ -22,17 +22,18 @@
   "Paginas": "509"
 },{
   "_id": {
-    "$oid": "61da0f1393ba5c1dd8d96341"
+    "$oid": "61dcc49eaf9aa152a239f267"
   },
   "Id": "3",
   "Titulo": "Lazarillo de Tormes",
   "Autor": "Anonimo",
+  "Anyo_Nacimiento": "N.D.",
   "Anyo_Publicacion": "1554",
   "Editorial": "Clasicos Populares",
   "Paginas": "150"
 },{
   "_id": {
-    "$oid": "61da0f1393ba5c1dd8d96342"
+    "$oid": "61dcc49eaf9aa152a239f268"
   },
   "Id": "4",
   "Titulo": "Las uvas de la ira",
@@ -43,7 +44,7 @@
   "Paginas": "619"
 },{
   "_id": {
-    "$oid": "61da0f1393ba5c1dd8d96343"
+    "$oid": "61dcc49eaf9aa152a239f269"
   },
   "Id": "5",
   "Titulo": "Watchmen",
@@ -54,7 +55,7 @@
   "Paginas": "416"
 },{
   "_id": {
-    "$oid": "61da0f1393ba5c1dd8d96344"
+    "$oid": "61dcc49eaf9aa152a239f26a"
   },
   "Id": "6",
   "Titulo": "La hoguera de las vanidades",
@@ -65,7 +66,7 @@
   "Paginas": "636"
 },{
   "_id": {
-    "$oid": "61da0f1393ba5c1dd8d96345"
+    "$oid": "61dcc49eaf9aa152a239f26b"
   },
   "Id": "7",
   "Titulo": "La familia de Pascual Duarte",
@@ -76,10 +77,10 @@
   "Paginas": "165"
 },{
   "_id": {
-    "$oid": "61da0f1393ba5c1dd8d96346"
+    "$oid": "61dcc49eaf9aa152a239f26c"
   },
   "Id": "8",
-  "Titulo": "El senor de las moscas",
+  "Titulo": "El senor de las MOSCAS",
   "Autor": "William Golding",
   "Anyo_Nacimiento": "1911",
   "Anyo_Publicacion": "1972",
@@ -87,7 +88,7 @@
   "Paginas": "236"
 },{
   "_id": {
-    "$oid": "61da0f1393ba5c1dd8d96347"
+    "$oid": "61dcc49eaf9aa152a239f26d"
   },
   "Id": "9",
   "Titulo": "La ciudad de los prodigios",
@@ -98,7 +99,7 @@
   "Paginas": "541"
 },{
   "_id": {
-    "$oid": "61da0f1393ba5c1dd8d96348"
+    "$oid": "61dcc49eaf9aa152a239f26e"
   },
   "Id": "10",
   "Titulo": "Ensayo sobre la ceguera",
@@ -109,7 +110,7 @@
   "Paginas": "439"
 },{
   "_id": {
-    "$oid": "61da0f1393ba5c1dd8d96349"
+    "$oid": "61dcc49eaf9aa152a239f26f"
   },
   "Id": "11",
   "Titulo": "Los surcos del azar",
@@ -120,7 +121,7 @@
   "Paginas": "349"
 },{
   "_id": {
-    "$oid": "61da0f1393ba5c1dd8d9634a"
+    "$oid": "61dcc49eaf9aa152a239f270"
   },
   "Id": "12",
   "Titulo": "Ghosts of Spain",
@@ -131,7 +132,7 @@
   "Paginas": "468"
 },{
   "_id": {
-    "$oid": "61da0f1393ba5c1dd8d9634b"
+    "$oid": "61dcc49eaf9aa152a239f271"
   },
   "Id": "13",
   "Titulo": "Sidi",
@@ -142,7 +143,7 @@
   "Paginas": "369"
 },{
   "_id": {
-    "$oid": "61da0f1393ba5c1dd8d9634c"
+    "$oid": "61dcc49eaf9aa152a239f272"
   },
   "Id": "14",
   "Titulo": "Dune",
@@ -151,4 +152,37 @@
   "Anyo_Publicacion": "1965",
   "Editorial": "Acervo",
   "Paginas": "741"
+},{
+  "_id": {
+    "$oid": "61dcc526338f3a54d2e40788"
+  },
+  "Titulo": "El nombre de la Rosa",
+  "Autor": "Umberto Eco",
+  "Anyo_Nacimiento": "1923",
+  "Anyo_Publicacion": "1972",
+  "Editorial": "RBA",
+  "Paginas": "453",
+  "Id": "15"
+},{
+  "_id": {
+    "$oid": "61dcc645ee2e344f262d0ec5"
+  },
+  "Titulo": "La reina oculta",
+  "Autor": "Jorge Molist",
+  "Anyo_Nacimiento": "1951",
+  "Anyo_Publicacion": "2007",
+  "Editorial": "mr",
+  "Paginas": "576",
+  "Id": "16"
+},{
+  "_id": {
+    "$oid": "61dcc69eee2e344f262d0ec8"
+  },
+  "Titulo": "La tienda",
+  "Autor": "Stephen King",
+  "Anyo_Nacimiento": "1947",
+  "Anyo_Publicacion": "1992",
+  "Editorial": "B",
+  "Paginas": "772",
+  "Id": "17"
 }]
