@@ -1,0 +1,154 @@
+[{
+  "_id": {
+    "$oid": "61da0f1393ba5c1dd8d9633f"
+  },
+  "Id": "1",
+  "Titulo": "El senor de los anillos",
+  "Autor": "J.R.R. Tolkien",
+  "Anyo_Nacimiento": "1890",
+  "Anyo_Publicacion": "1950",
+  "Editorial": "Minotauro",
+  "Paginas": "1392"
+},{
+  "_id": {
+    "$oid": "61da0f1393ba5c1dd8d96340"
+  },
+  "Id": "2",
+  "Titulo": "El juego de Ender",
+  "Autor": "Orson Scott Card",
+  "Anyo_Nacimiento": "1951",
+  "Anyo_Publicacion": "1977",
+  "Editorial": "Ediciones B",
+  "Paginas": "509"
+},{
+  "_id": {
+    "$oid": "61da0f1393ba5c1dd8d96341"
+  },
+  "Id": "3",
+  "Titulo": "Lazarillo de Tormes",
+  "Autor": "Anonimo",
+  "Anyo_Publicacion": "1554",
+  "Editorial": "Clasicos Populares",
+  "Paginas": "150"
+},{
+  "_id": {
+    "$oid": "61da0f1393ba5c1dd8d96342"
+  },
+  "Id": "4",
+  "Titulo": "Las uvas de la ira",
+  "Autor": "John Steinbeck",
+  "Anyo_Nacimiento": "1902",
+  "Anyo_Publicacion": "1939",
+  "Editorial": "Alianza",
+  "Paginas": "619"
+},{
+  "_id": {
+    "$oid": "61da0f1393ba5c1dd8d96343"
+  },
+  "Id": "5",
+  "Titulo": "Watchmen",
+  "Autor": "Alan Moore",
+  "Anyo_Nacimiento": "1953",
+  "Anyo_Publicacion": "1980",
+  "Editorial": "ECC",
+  "Paginas": "416"
+},{
+  "_id": {
+    "$oid": "61da0f1393ba5c1dd8d96344"
+  },
+  "Id": "6",
+  "Titulo": "La hoguera de las vanidades",
+  "Autor": "Tom Wolfe",
+  "Anyo_Nacimiento": "1930",
+  "Anyo_Publicacion": "1980",
+  "Editorial": "Anagrama",
+  "Paginas": "636"
+},{
+  "_id": {
+    "$oid": "61da0f1393ba5c1dd8d96345"
+  },
+  "Id": "7",
+  "Titulo": "La familia de Pascual Duarte",
+  "Autor": "Camilo Jose Cela",
+  "Anyo_Nacimiento": "1916",
+  "Anyo_Publicacion": "1942",
+  "Editorial": "Destino",
+  "Paginas": "165"
+},{
+  "_id": {
+    "$oid": "61da0f1393ba5c1dd8d96346"
+  },
+  "Id": "8",
+  "Titulo": "El senor de las moscas",
+  "Autor": "William Golding",
+  "Anyo_Nacimiento": "1911",
+  "Anyo_Publicacion": "1972",
+  "Editorial": "Alianza",
+  "Paginas": "236"
+},{
+  "_id": {
+    "$oid": "61da0f1393ba5c1dd8d96347"
+  },
+  "Id": "9",
+  "Titulo": "La ciudad de los prodigios",
+  "Autor": "Eduardo Mendoza",
+  "Anyo_Nacimiento": "1943",
+  "Anyo_Publicacion": "1986",
+  "Editorial": "Seix Barral",
+  "Paginas": "541"
+},{
+  "_id": {
+    "$oid": "61da0f1393ba5c1dd8d96348"
+  },
+  "Id": "10",
+  "Titulo": "Ensayo sobre la ceguera",
+  "Autor": "Jose Saramago",
+  "Anyo_Nacimiento": "1922",
+  "Anyo_Publicacion": "1995",
+  "Editorial": "Santillana",
+  "Paginas": "439"
+},{
+  "_id": {
+    "$oid": "61da0f1393ba5c1dd8d96349"
+  },
+  "Id": "11",
+  "Titulo": "Los surcos del azar",
+  "Autor": "Paco Roca",
+  "Anyo_Nacimiento": "1969",
+  "Anyo_Publicacion": "2013",
+  "Editorial": "Astiberri",
+  "Paginas": "349"
+},{
+  "_id": {
+    "$oid": "61da0f1393ba5c1dd8d9634a"
+  },
+  "Id": "12",
+  "Titulo": "Ghosts of Spain",
+  "Autor": "Giles Tremlett",
+  "Anyo_Nacimiento": "1962",
+  "Anyo_Publicacion": "2006",
+  "Editorial": "Faber & Faber",
+  "Paginas": "468"
+},{
+  "_id": {
+    "$oid": "61da0f1393ba5c1dd8d9634b"
+  },
+  "Id": "13",
+  "Titulo": "Sidi",
+  "Autor": "Arturo Perez Reverte",
+  "Anyo_Nacimiento": "1951",
+  "Anyo_Publicacion": "2019",
+  "Editorial": "Penguin",
+  "Paginas": "369"
+},{
+  "_id": {
+    "$oid": "61da0f1393ba5c1dd8d9634c"
+  },
+  "Id": "14",
+  "Titulo": "Dune",
+  "Autor": "Frank Herbert",
+  "Anyo_Nacimiento": "1920",
+  "Anyo_Publicacion": "1965",
+  "Editorial": "Acervo",
+  "Paginas": "741"
+}]
