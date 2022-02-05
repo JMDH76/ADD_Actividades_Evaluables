@@ -1,0 +1,150 @@
+@font-face {
+  /*Para poder usarla debemos "declarar* la fuente con: #font-family*/
+  font-family: "rick_morty"; /*Le damos nombre a la fuente*/
+  src: url("Fonts/get_schwifty.ttf"); /* indicamos url donde está dentro de nuestro proyecto, carpeta Fonts*/
+}
+
+body {
+  width: 80%;
+
+  margin-left: auto;
+  margin-right: auto;
+  background-color: black;
+  justify-content: center;
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+#cabecera {
+  display: flex;
+  flex-direction: row;
+}
+
+#subtitulo {
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+  font-family: "rick_morty";
+  color: #73e345;
+  font-size: 32px;
+}
+
+#titulo {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#titulo1 {
+  margin-left: 50px;
+}
+
+nav {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+}
+
+.botonera {
+  display: flex;
+  margin: 10px;
+  justify-content: center;
+}
+
+button {
+  margin: 0px 15px 0 15px;
+  width: 130px;
+  height: 30px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  box-shadow: gray -3px -3px 10px inset;
+  border-color: #73e345;
+}
+
+input {
+  text-align: center;
+  color: black;
+  font-size: 16px;
+  background-color: whitesmoke;
+  font-style: italic;
+  font-weight: bold;
+  border-radius: 5px;
+  width: 250px;
+  box-shadow: gray 3px 3px 10px inset;
+  border-color: #73e345;
+  border-width: 2px;
+}
+
+#tituloFoto {
+  margin-top: 90px;
+  text-align: left;
+  margin-left: 30px;
+  font-family: "rick_morty";
+  color: black;
+  font-size: 36px;
+}
+
+#tituloFoto2 {
+  text-align: left;
+  font-family: "rick_morty";
+  color: black;
+  font-size: 36px;
+}
+
+main {
+  margin-top: 15px;
+  height: 650px;
+  padding-top: 0;
+  padding: 10px;
+  margin-left: 500px;
+  flex-direction: column;
+  justify-content: center;
+}
+
+section {
+  display: flex;
+  flex-direction: row;
+  margin-right: 0;
+  margin-bottom: 0px;
+}
+
+#pantalla {
+  margin-left: 30px;
+  color: #22a2bd;
+  background-color: black;
+  border: 0px;
+  font-size: 20px;
+}
+
+aside {
+  margin-top: 0px;
+  padding-top: 0px;
+}
+
+#pantalla2 {
+  background-color: black;
+  color: #22a2bd;
+  font-size: 20px;
+  border: 0px;
+}
+
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+}
+
+#firma {
+    margin:0px;
+    padding:0px;
+  font-family: "rick_morty";
+  color: #73e345;
+  font-size: 30px;
+  margin-left: 120px;
+}

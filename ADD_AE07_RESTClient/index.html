@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="estilos.css">
+    <title>Cuaderno 04</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="text/javascript">
+
+
+        /*Función reset(), limpia todos los campos y modifica estilos para ocultar
+        textos*/
+        function reset() {
+            document.getElementById("strBusqueda").value = "";
+            document.getElementById("imagenPersonaje").src = "";
+            document.getElementById("pantalla").value = "";
+            document.getElementById("pantalla2").value = "";
+            document.getElementById("tituloFoto").style.color = "black";
+            document.getElementById("tituloFoto2").style.color = "black";
+            document.getElementById("strBusqueda").style.color = "black";
+        }
+
+        /*Accedemos a la RestAPI indicando el número de personaje al final de la ruta
+        y obtenemos los datos presentándolos por pantalla. Como cada personaje puede 
+        participar en varios capítulos, obtenemos los enlaces a la API de cada uno de ellos
+        y los guardamos en un array para usarlos después en otra consulta y así obtener
+        la temporada, número y nombre de cada capítulo asociado al personaje.
+        Las consultan se anidadan para presentarlo todo a la vez.*/
+        function buscar(opcion) {
+            var dato;
+            var capitulos = [];
+            /*Según el botón que apretemos (ramdom o por ID) pasará un argumento diferente que hará
+            que se genere un número aleatorio o lo capture del campo input. Para que se pueda guardar
+            posteriormente la consulta en nuestra BDD, aunque se elija el aleatorio, este se guardará 
+            en el campo input pero disimulado cambiando el color del texto*/
+            if (opcion == 1) {
+                let min = 1;
+                let max = 826;
+                dato = Math.floor((Math.random() * (max - min + 1)) + min);
+                document.getElementById("strBusqueda").style.color = "whitesmoke";
+                document.getElementById("strBusqueda").value = dato;
+            } else {
+                if (document.getElementById("strBusqueda").value != "") {
+                    dato = document.getElementById("strBusqueda").value;
+                } else {
+                    alert("You must enter a valid ID or generate a random one.")
+                    exit();
+                }
+            }
+
+            axios
+                .get("https://rickandmortyapi.com/api/character/" + dato)
+                .then(response => {
+                    document.getElementById("pantalla").value =
+                        "Name:      " + response.data.name
+                        + "\nId:        " + dato
+                        + "\nSpecie:    " + response.data.species
+                        + "\nGender:    " + response.data.gender
+                        + "\nOrigin:    " + response.data.origin.name
+                        + "\nLocation:  " + response.data.location.name
+                        + "\nStatus:    " + response.data.status;
+                    document.getElementById("imagenPersonaje").src = response.data.image;
+
+                    //Guardamos todos los capítulos donde aparece el personaje en un array para 
+                    //buscar con otra consulta la info de cada capítulo
+                    for (let i = 0; i < response.data.episode.length; i++) {
+                        capitulos.push(response.data.episode[i]);
+                    }
+
+                    /*Ordenamos el array, luego lo leemos y pasamos cada elemento del array 
+                    como una nueva consulta a la API. Generamos un string con el nombre y 
+                    capitulo donde sale el personaje.*/
+                    var cap = capitulos.sort(function (a, b) { return a - b; });
+                    var salida = "";
+                    for (let i = 0; i < capitulos.length; i++) {
+                        axios.get(cap[i]).then(response => {
+                            salida = salida + response.data.episode + " - " + response.data.name + "\n";
+                            document.getElementById("pantalla2").value = salida;
+                        }).catch(error => {
+                            alert("Query error:  " + error);
+                        });
+                    }
+
+                    //Modificamos estilos para presentar
+                    document.getElementById("strBusqueda").style.color = "whitesmoke";
+                    document.getElementById("tituloFoto").style.color = "#73E345";
+                    document.getElementById("tituloFoto2").style.color = "#73E345";
+
+                })
+                .catch(error => {
+                    alert("Query error: " + error);
+                });
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript">
+
+        /*Llamada al fichero PHP para guardar los datos de la consulta en nuestra base de datos
+        mediante instrucción SQL.
+        Usando una petición axios a la RestAPI creamos las variable (al estar presentada la 
+        información como strings no podemos capturarla por etiqueta, salvo la id del personaje 
+        que la usamos en la consulta); una vez creadas hacemos la petición con ajax para pasarle 
+        la información al fichero PHP y poder así guardar los datos en la BDD  */
+        function guardarInfo() {
+            var dato = document.getElementById("strBusqueda").value;
+            axios
+                .get("https://rickandmortyapi.com/api/character/" + dato)
+                .then(response => {
+                    var nameId = response.data.name;
+                    var specie = response.data.species;
+                    var gender = response.data.gender;
+                    var origin = response.data.origin.name;
+                    var locat = response.data.location.name;
+                    var stat = response.data.status;
+                    var imagen = response.data.image;
+                    var chapters = document.getElementById("pantalla2").value;
+                    $.ajax({
+                        type: "POST",
+                        url: "PHPServidor.php",
+                        data: {
+                            nameId: nameId,
+                            specie: specie,
+                            gender: gender,
+                            origin: origin,
+                            locat: locat,
+                            stat: stat,
+                            imagen: imagen,
+                            chapters: chapters
+                        },
+                        success: function (response) {
+                            alert(response);
+                        },
+                        error: function () {
+                            alert("Error");
+                        }
+                    });
+                })
+                .catch(error => {
+                    alert("Query error!\n" + error + "\n\nYou must select a character");
+                });
+            document.getElementById("strBusqueda").value = "";
+        }
+    </script>
+</head>
+
+<!--/// Estructura HTML para presentar la aplicacion Web ///-->
+
+<body>
+    <header>
+        <div id="cabecera">
+            <img id="titulo" src="./images/meesseek.png" alt="rick&morty" height="125px" />
+            <img id="titulo1" src="./images/logo.png" alt="rick&morty" height="125px" />
+            <img id="titulo" src="./images/logo3.png" alt="rick&morty" height="125px" />
+        </div>
+        <div id="subtituloCabecera">
+            <p id="subtitulo">Find all the characters from your favourite series</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class=" botonera">
+            <input type="text" autofocus placeholder="Insert character ID (1 to 826)" value="" id="strBusqueda" />
+            <button id="botonBusqueda" onclick="buscar(0)">Find by ID</button>
+            <button id="botonAleatorio" onclick="buscar(1)">Random</button>
+            <button id="botonGuardar" onclick="guardarInfo()">Save character</button>
+            <button id="botonGuardar" onclick="reset()">Reset</button>
+        </div>
+    </nav>
+
+    <main>
+        <section>
+            <div>
+                <img id="imagenPersonaje" src="" height="350" />
+            </div>
+            <div id="datosPersonaje">
+                <p>
+
+                <p id="tituloFoto">Character data</p>
+                <textarea type="text" value="" id="pantalla" rows="7" cols="60"></textarea>
+                </p>
+            </div>
+        </section>
+
+        <aside>
+            <div>
+                <div>
+                    <p id="tituloFoto2">Chapters</p>
+                </div>
+                <p>
+                    <textarea type="text" value="" id="pantalla2" rows="5" cols="100"></textarea>
+                </p>
+            </div>
+        </aside>
+    </main>
+
+    <footer>
+        <p id="firma">by JoséManuel Domínguez Hernández</p>
+        <p id="firma">2º DAM - Semi Curso 2021 - 22</p>
+    </footer>
+
+</body>
+
+</html>
